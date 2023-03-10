@@ -22,31 +22,75 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool ohTurn = true; //The first player is oh
   List<String> displayExOh = ['', '', '', '', '', '', '', '', ''];
+
+  var myTextStyle = TextStyle(color: Colors.white, fontSize: 30);
+  int ohScore = 0;
+  int exScore = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[800],
-      body: GridView.builder(
-          itemCount: 9,
-          gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-          itemBuilder: (BuildContext_context, int index) {
-            return GestureDetector(
-              onTap: () {
-                _tapped(index);
-              },
-              child: Container(
-                decoration:
-                    BoxDecoration(border: Border.all(color: Colors.grey)),
-                child: Center(
-                  child: Text(
-                    displayExOh[index],
-                    style: TextStyle(color: Colors.white, fontSize: 40),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Player O', style: myTextStyle,),
+                        Text(ohScore.toString(), style: myTextStyle,),
+                      ],
+                    ),
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Player X', style: myTextStyle,),
+                        Text(exScore.toString(), style: myTextStyle,),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            );
-          }),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: GridView.builder(
+                itemCount: 9,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3),
+                itemBuilder: (BuildContext_context, int index) {
+                  return GestureDetector(
+                    onTap: () {
+                      _tapped(index);
+                    },
+                    child: Container(
+                      decoration:
+                          BoxDecoration(border: Border.all(color: Colors.grey)),
+                      child: Center(
+                        child: Text(
+                          displayExOh[index],
+                          style: TextStyle(color: Colors.white, fontSize: 40),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+          ),
+          Expanded(
+            child: Container(),
+          ),
+        ],
+      ),
     );
   }
 
@@ -54,7 +98,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       if (ohTurn && displayExOh[index] == '') {
         displayExOh[index] = 'O';
-      } else if(!ohTurn && displayExOh[index] == ''){
+      } else if (!ohTurn && displayExOh[index] == '') {
         displayExOh[index] = 'x';
       }
       ohTurn = !ohTurn;
@@ -122,11 +166,34 @@ class _HomePageState extends State<HomePage> {
 
   void _showWinDialog(String winner) {
     showDialog(
+      barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('WINNER is: '+ winner),
+            title: Text('WINNER is: ' + winner),
+            actions: [
+              FloatingActionButton(
+                  child: Text('Play Again'),
+                  onPressed: (){
+                    _clearBoard();
+                    Navigator.of(context).pop();
+                  }
+              )
+            ],
           );
         });
+    if(winner == 'O'){
+      ohScore += 1;
+    }else if(winner == 'x'){
+      exScore += 1;
+    }
+  }
+
+  void _clearBoard(){
+    setState(() {
+      for(int i=0; i<9; i++){
+        displayExOh[i] = '';
+      }
+    });
   }
 }
