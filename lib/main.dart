@@ -52,9 +52,9 @@ class _HomePageState extends State<HomePage> {
 
   void _tapped(int index) {
     setState(() {
-      if (ohTurn) {
+      if (ohTurn && displayExOh[index] == '') {
         displayExOh[index] = 'O';
-      } else {
+      } else if(!ohTurn && displayExOh[index] == ''){
         displayExOh[index] = 'x';
       }
       ohTurn = !ohTurn;
