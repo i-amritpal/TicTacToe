@@ -26,6 +26,7 @@ class _HomePageState extends State<HomePage> {
   var myTextStyle = TextStyle(color: Colors.white, fontSize: 30);
   int ohScore = 0;
   int exScore = 0;
+  int filledBoxes = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -95,11 +96,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _tapped(int index) {
+
     setState(() {
       if (ohTurn && displayExOh[index] == '') {
         displayExOh[index] = 'O';
+        filledBoxes += 1;
       } else if (!ohTurn && displayExOh[index] == '') {
         displayExOh[index] = 'x';
+        filledBoxes += 1;
       }
       ohTurn = !ohTurn;
       _checkWinnner();
@@ -162,6 +166,30 @@ class _HomePageState extends State<HomePage> {
         displayExOh[2] != '') {
       _showWinDialog(displayExOh[2]);
     }
+
+    else if(filledBoxes == 9){
+      _showDrawDialog();
+    }
+  }
+
+  void _showDrawDialog() {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('DRAW'),
+            actions: [
+              FloatingActionButton(
+                  child: Text('Play Again'),
+                  onPressed: (){
+                    _clearBoard();
+                    Navigator.of(context).pop();
+                  }
+              )
+            ],
+          );
+        });
   }
 
   void _showWinDialog(String winner) {
@@ -195,5 +223,7 @@ class _HomePageState extends State<HomePage> {
         displayExOh[i] = '';
       }
     });
+
+    filledBoxes = 0;
   }
 }
