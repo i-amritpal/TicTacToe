@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 
 void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  SystemChrome.setEnabledSystemUIOverlays([]);
+  // SystemChrome.setEnabledSystemUIOverlays([]);
   runApp(MyApp());
 }
 
@@ -39,7 +39,6 @@ class _IntroScreenState extends State<IntroScreen>
   );
   @override
   Widget build(BuildContext context) {
-    final color = Colors.white;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -78,7 +77,7 @@ class _IntroScreenState extends State<IntroScreen>
                         child: CircleAvatar(
                           backgroundColor: Colors.grey,
                           child: Container(
-                            child: Image.asset('lib/images/Tic_tac_toe.png',
+                            child: Image.asset('lib/images/Tic_tac_toe.svg.png',
                               color: Colors.white,
                               fit: BoxFit.scaleDown,
                             ),
